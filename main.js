@@ -56,6 +56,10 @@ const result = document.getElementById("result");
 let cardsPicked = [];
 let cardsPickedIds = [];
 const cardsWon = [];
+const page = document.querySelector(".page");
+
+let wonContainer =
+  "Congratulations Cadet You have Proven Your Self Worthy, The World Awaits You";
 
 function createBoard() {
   for (let i = 0; i < cardCollection.length; i++) {
@@ -78,11 +82,11 @@ function checkMatch() {
     cards[optionTwo].setAttribute("src", "images/blank.png");
     alert("You have clicked the the same image!");
   } else if (cardsPicked[0] == cardsPicked[1]) {
-    alert("You have a match");
     cards[optionOne].setAttribute("src", "images/white.png");
     cards[optionTwo].setAttribute("src", "images/white.png");
     cards[optionOne].removeEventListener("click", cardFlip);
     cards[optionTwo].removeEventListener("click", cardFlip);
+    alert("You have a match");
     cardsWon.push(cardsPicked);
   } else {
     cards[optionOne].setAttribute("src", "images/blank.png");
@@ -93,17 +97,18 @@ function checkMatch() {
   cardsPicked = [];
   cardsPickedIds = [];
 
-  if (cardsWon == cardCollection / 2) {
-    result.textContent = "Congratulations you found em all";
+  if (cardsWon.length == cardCollection.length / 2) {
+    page.innerHTML = wonContainer;
+    page.classList.add("won");
   }
 }
 
 function cardFlip() {
   const cardId = this.getAttribute("data-id");
-  cardsPickedIds.push(cardId);
   cardsPicked.push(cardCollection[cardId].name);
+  cardsPickedIds.push(cardId);
   this.setAttribute("src", cardCollection[cardId].img);
   if (cardsPicked.length === 2) {
-    setTimeout(checkMatch(), 500);
+    setTimeout(checkMatch, 500);
   }
 }
